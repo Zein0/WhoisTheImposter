@@ -157,6 +157,10 @@ class WebSocketService {
   startVoting(): void {
     this.send('START_VOTING', {});
   }
+
+  sendChatMessage(playerName: string, message: string): void {
+    this.send('SEND_CHAT', { playerName, message });
+  }
 }
 
 // Export singleton instance
@@ -174,9 +178,12 @@ export const WS_MESSAGE_TYPES = {
   PLAYER_REVEALED: 'PLAYER_REVEALED',
   VOTES_SUBMITTED: 'VOTES_SUBMITTED',
   VOTING_STARTED: 'VOTING_STARTED',
+  PHASE_CHANGED: 'PHASE_CHANGED',
   GAME_PAUSED: 'GAME_PAUSED',
   GAME_RESUMED: 'GAME_RESUMED',
   GAME_ENDED: 'GAME_ENDED',
+  HOST_CHANGED: 'HOST_CHANGED',
+  CHAT_MESSAGE: 'CHAT_MESSAGE',
   ERROR: 'ERROR',
   SYNC_STATE: 'SYNC_STATE',
 } as const;

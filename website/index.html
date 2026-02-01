@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who's The Imposter? - Find the imposter among your friends!</title>
+    <meta name="description" content="The ultimate party game! Find the imposter among your friends. Play locally or online with up to 15 players. Available in 5 languages.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+                    <span class="logo-icon">🔍</span>
+                    <span class="logo-text">Who's The Imposter?</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="#how-to-play">How to Play</a>
+                    <a href="#download">Download</a>
+                    <a href="#languages">Languages</a>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#features">Features</a>
+        <a href="#how-to-play">How to Play</a>
+        <a href="#download">Download</a>
+        <a href="#languages">Languages</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Find the <span class="highlight">Imposter</span><br>
+                    Among Your Friends!
+                </h1>
+                <p class="hero-subtitle">
+                    The ultimate party game. Discuss, deceive, and discover who's lying!
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">2-15</span>
+                        <span class="stat-label">Players</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">Languages</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">13</span>
+                        <span class="stat-label">Categories</span>
+                    </div>
+                </div>
+                <div class="download-buttons">
+                    <a href="#" class="download-btn app-store" id="appStoreBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.79 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/>
+                        </svg>
+                        <div>
+                            <span class="download-label">Download on the</span>
+                            <span class="download-name">App Store</span>
+                        </div>
+                    </a>
+                    <a href="#" class="download-btn play-store" id="playStoreBtn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
+                        </svg>
+                        <div>
+                            <span class="download-label">GET IT ON</span>
+                            <span class="download-name">Google Play</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <div class="game-preview">
+                            <div class="preview-card">
+                                <h3>🔪 IMPOSTER</h3>
+                                <p>or</p>
+                                <h3>👤 CREWMATE</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Amazing Features</h2>
+            <p class="section-subtitle">Everything you need for the perfect party game</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Local Multiplayer</h3>
+                    <p>Play with 2-6 friends on a single device. Completely free, no internet required!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>Online Mode</h3>
+                    <p>Create private lobbies and play with up to 15 friends remotely. Just share a 6-digit code!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>In-Game Chat</h3>
+                    <p>Discuss, debate, and deceive! Real-time chat during online games.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>5 Languages</h3>
+                    <p>Available in English, Dutch, Spanish, French, and Portuguese. Play in your language!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3>13 Categories</h3>
+                    <p>From Movies to Food, Sports to Video Games. 50-100 words per category!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Special Modes</h3>
+                    <p>Try "No Imposters" or "Everyone is Imposter" modes for extra chaos!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Custom Timers</h3>
+                    <p>Adjust game duration from 1-10 minutes. Perfect for any situation!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌙</div>
+                    <h3>Dark Mode</h3>
+                    <p>Beautiful dark theme that's easy on the eyes during late-night game sessions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Play Section -->
+    <section id="how-to-play" class="how-to-play">
+        <div class="container">
+            <h2 class="section-title">How to Play</h2>
+            <p class="section-subtitle">Easy to learn, impossible to master!</p>
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Create Lobby</h3>
+                    <p>Add 2-15 players and select your favorite categories</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Reveal Roles</h3>
+                    <p>Each player privately reveals their word. Imposters get "IMPOSTER"!</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Discuss</h3>
+                    <p>Talk about your word without being too obvious. Imposters must blend in!</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Vote</h3>
+                    <p>Vote out who you think is the imposter. Ties eliminate both players!</p>
+                </div>
+            </div>
+
+            <div class="roles-section">
+                <div class="role crewmate-role">
+                    <div class="role-icon">👤</div>
+                    <h3>Crewmate</h3>
+                    <p>Gets the real word</p>
+                    <ul>
+                        <li>Describe your word subtly</li>
+                        <li>Pay attention to suspicious answers</li>
+                        <li>Vote out the imposters!</li>
+                    </ul>
+                </div>
+                <div class="role imposter-role">
+                    <div class="role-icon">🔪</div>
+                    <h3>Imposter</h3>
+                    <p>Gets "IMPOSTER" or different word</p>
+                    <ul>
+                        <li>Blend in with the group</li>
+                        <li>Ask questions to learn the word</li>
+                        <li>Don't get caught!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Languages Section -->
+    <section id="languages" class="languages">
+        <div class="container">
+            <h2 class="section-title">Play in Your Language</h2>
+            <p class="section-subtitle">Fully translated into 5 languages</p>
+            <div class="languages-grid">
+                <div class="language-card">
+                    <div class="flag">🇬🇧</div>
+                    <h3>English</h3>
+                </div>
+                <div class="language-card">
+                    <div class="flag">🇳🇱</div>
+                    <h3>Nederlands</h3>
+                </div>
+                <div class="language-card">
+                    <div class="flag">🇪🇸</div>
+                    <h3>Español</h3>
+                </div>
+                <div class="language-card">
+                    <div class="flag">🇫🇷</div>
+                    <h3>Français</h3>
+                </div>
+                <div class="language-card">
+                    <div class="flag">🇵🇹</div>
+                    <h3>Português</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="download-section">
+        <div class="container">
+            <div class="download-content">
+                <h2>Ready to Find the Imposter?</h2>
+                <p>Download now and start playing with your friends!</p>
+                <div class="download-buttons">
+                    <a href="#" class="download-btn app-store" id="appStoreBtn2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.1 22C7.79 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/>
+                        </svg>
+                        <div>
+                            <span class="download-label">Download on the</span>
+                            <span class="download-name">App Store</span>
+                        </div>
+                    </a>
+                    <a href="#" class="download-btn play-store" id="playStoreBtn2">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z"/>
+                        </svg>
+                        <div>
+                            <span class="download-label">GET IT ON</span>
+                            <span class="download-name">Google Play</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-icon">🔍</span>
+                    <span class="logo-text">Who's The Imposter?</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Support</a>
+                </div>
+                <p class="footer-copyright">
+                    &copy; 2026 Who's The Imposter. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

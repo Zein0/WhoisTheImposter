@@ -48,7 +48,23 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
     calculateResults,
   } = useGameStore();
 
-  const { lobby, isHost, playerId, leaveLobby } = useOnlineStore();
+  const {
+    lobby,
+    isHost,
+    playerId,
+    myWord,
+    isImposter: amImposter,
+    initialize,
+    cleanup,
+    leaveLobby,
+    startGame: startOnlineGame,
+    playerRevealed: notifyPlayerRevealed,
+    submitVotes: submitOnlineVotes,
+    pauseGame: pauseOnlineGame,
+    resumeGame: resumeOnlineGame,
+    startVoting: startOnlineVoting,
+  } = useOnlineStore();
+
   const { pauseTimer, resumeTimer, formattedTime } = useTimer();
   const {
     selectedPlayers,
@@ -63,12 +79,14 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
   const [waitingForPlayers, setWaitingForPlayers] = useState(true);
 
   useEffect(() => {
-    // In a real implementation, this would connect to WebSocket
-    // and sync game state with the server
+    // Initialize WebSocket listeners
+    initialize();
+
     return () => {
-      // Cleanup WebSocket connection
+      // Cleanup WebSocket connection on unmount
+      cleanup();
     };
-  }, []);
+  }, [initialize, cleanup]);
 
   const handleCopyCode = async () => {
     await Clipboard.setStringAsync(lobbyCode);
@@ -76,13 +94,13 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
   };
 
   const handleStartOnlineGame = () => {
-    if (players.length < 2) {
+    if (!lobby || lobby.players.length < 2) {
       Alert.alert('Not Enough Players', 'Wait for more players to join.');
       return;
     }
     setShowLobbyInfo(false);
     setWaitingForPlayers(false);
-    startGame();
+    startOnlineGame();
   };
 
   const handleLeave = () => {
@@ -103,12 +121,13 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
     );
   };
 
-  const currentPlayer = players[currentPlayerIndex];
-  const myPlayer = players.find((p) => p.id === playerId);
+  const lobbyPlayers = lobby?.players || [];
+  const myPlayer = lobbyPlayers.find((p) => p.id === playerId);
+  const currentPlayer = lobbyPlayers.find((p) => !p.hasRevealed);
 
   const handleRevealComplete = () => {
-    if (currentPlayer) {
-      revealPlayer(currentPlayer.id);
+    if (playerId) {
+      notifyPlayerRevealed(playerId);
     }
   };
 
@@ -119,36 +138,32 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
   const handlePause = () => {
     if (!isHost) return;
     pauseTimer();
+    pauseOnlineGame();
     setShowPauseMenu(true);
   };
 
   const handleResume = () => {
     setShowPauseMenu(false);
+    resumeOnlineGame();
     resumeTimer();
   };
 
   const handleStartVoting = () => {
     setShowPauseMenu(false);
-    startVoting();
+    startOnlineVoting();
   };
 
   const handleSubmitVote = () => {
     if (!myPlayer) return;
-    submitPlayerVotes(myPlayer.id);
-
-    // Check if all players have voted
-    const allVoted = players.every((p) => p.hasVoted || p.id === myPlayer.id);
-    if (allVoted) {
-      calculateResults();
-    }
+    submitOnlineVotes(selectedPlayers);
   };
 
   const handleViewResults = () => {
     navigation.replace('Results');
   };
 
-  // Lobby waiting screen
-  if (showLobbyInfo || waitingForPlayers) {
+  // Lobby waiting screen (setup phase)
+  if (!lobby || lobby.phase === 'setup' || showLobbyInfo || waitingForPlayers) {
     return (
       <SafeAreaView className="flex-1 bg-game-background">
         <View className="flex-1 px-6 py-4">
@@ -184,10 +199,10 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
           {/* Players */}
           <Animated.View entering={FadeIn.delay(200)} className="flex-1">
             <Text className="text-white text-lg font-bold mb-3">
-              Players ({players.length})
+              Players ({lobbyPlayers.length})
             </Text>
             <ScrollView>
-              {players.map((player, index) => (
+              {lobbyPlayers.map((player, index) => (
                 <PlayerCard
                   key={player.id}
                   player={player}
@@ -196,7 +211,7 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
                 />
               ))}
 
-              {players.length === 0 && (
+              {lobbyPlayers.length === 0 && (
                 <View className="items-center py-8">
                   <Text className="text-white/50">Waiting for players to join...</Text>
                 </View>
@@ -213,10 +228,10 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
                 variant="success"
                 size="large"
                 fullWidth
-                disabled={players.length < 2}
+                disabled={lobbyPlayers.length < 2}
               />
               <Text className="text-white/50 text-center text-sm">
-                {players.length < 2
+                {lobbyPlayers.length < 2
                   ? 'Need at least 2 players'
                   : 'Ready to start!'}
               </Text>
@@ -239,7 +254,7 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
   }
 
   // Revealing phase
-  if (phase === 'revealing') {
+  if (lobby?.phase === 'revealing') {
     // Check if it's this player's turn
     const isMyTurn = currentPlayer?.id === playerId;
 
@@ -252,11 +267,11 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
               Waiting for others to reveal...
             </Text>
             <Text className="text-white/60 text-center">
-              {currentPlayer?.name} is viewing their role
+              {currentPlayer?.name || 'Someone'} is viewing their role
             </Text>
 
             <View className="flex-row gap-1 mt-8">
-              {players.map((p, i) => (
+              {lobbyPlayers.map((p, i) => (
                 <View
                   key={i}
                   className={`w-3 h-3 rounded-full ${
@@ -276,8 +291,8 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
         <SafeAreaView className="flex-1 bg-game-background items-center justify-center px-6">
           <HoldToRevealButton
             playerName={myPlayer?.name || 'Player'}
-            word={myPlayer?.word}
-            isImposter={myPlayer?.role === 'imposter'}
+            word={myWord || 'LOADING'}
+            isImposter={amImposter}
             onRevealComplete={handleRevealComplete}
           />
         </SafeAreaView>
@@ -291,15 +306,15 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
           <View
             className={`
               w-64 h-64 rounded-full items-center justify-center
-              ${myPlayer.role === 'imposter' ? 'bg-imposter-red' : 'bg-crew-green'}
+              ${amImposter ? 'bg-imposter-red' : 'bg-crew-green'}
             `}
           >
             <Text className="text-white text-xl font-bold mb-2">You are</Text>
             <Text className="text-white text-3xl font-bold">
-              {myPlayer.role === 'imposter' ? '🔪 IMPOSTER' : '👤 CREWMATE'}
+              {amImposter ? '🔪 IMPOSTER' : '👤 CREWMATE'}
             </Text>
-            {myPlayer.role === 'crewmate' && myPlayer.word && (
-              <Text className="text-white text-xl mt-4">{myPlayer.word}</Text>
+            {!amImposter && myWord && (
+              <Text className="text-white text-xl mt-4">{myWord}</Text>
             )}
           </View>
           <Text className="text-white/60 mt-8">
@@ -311,14 +326,15 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
   }
 
   // Discussion phase
-  if (phase === 'discussion') {
+  if (lobby?.phase === 'discussion') {
+    const firstSpeaker = lobbyPlayers[Math.floor(Math.random() * lobbyPlayers.length)];
     return (
       <SafeAreaView className="flex-1 bg-game-background">
         <View className="flex-1 px-6">
           <Animated.View entering={FadeInDown} className="items-center mb-6">
             <Text className="text-white/60 text-lg">First to speak:</Text>
             <Text className="text-primary-400 text-2xl font-bold">
-              {players[firstSpeakerIndex]?.name}
+              {firstSpeaker?.name || 'Random Player'}
             </Text>
           </Animated.View>
 
@@ -330,15 +346,15 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
             <Text className="text-white text-center">
               Discuss with your group! Find the imposter!
             </Text>
-            {myPlayer?.role === 'crewmate' && (
+            {!amImposter && myWord && (
               <Text className="text-primary-400 text-center mt-2">
-                Your word: {myPlayer.word}
+                Your word: {myWord}
               </Text>
             )}
           </Card>
 
           <ScrollView className="flex-1 mb-4">
-            {players.map((player, index) => (
+            {lobbyPlayers.map((player, index) => (
               <PlayerCard
                 key={player.id}
                 player={player}
@@ -399,7 +415,7 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
   }
 
   // Voting phase
-  if (phase === 'voting') {
+  if (lobby?.phase === 'voting') {
     const hasVoted = myPlayer?.hasVoted;
 
     if (hasVoted) {
@@ -415,7 +431,7 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
             </Text>
 
             <View className="flex-row gap-1 mt-8">
-              {players.map((p, i) => (
+              {lobbyPlayers.map((p, i) => (
                 <View
                   key={i}
                   className={`w-3 h-3 rounded-full ${
@@ -445,7 +461,7 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
           </Animated.View>
 
           <ScrollView className="flex-1 mb-4">
-            {players
+            {lobbyPlayers
               .filter((p) => p.id !== playerId)
               .map((player, index) => (
                 <PlayerCard
@@ -472,7 +488,7 @@ export const OnlineGameScreen: React.FC<OnlineGameScreenProps> = ({
   }
 
   // Results phase
-  if (phase === 'results') {
+  if (lobby?.phase === 'results') {
     return (
       <SafeAreaView className="flex-1 bg-game-background items-center justify-center px-6">
         <Animated.View entering={ZoomIn} className="items-center">
